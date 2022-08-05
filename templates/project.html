@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<!DOCTYPE html>
+
+<div class ="card-wrapper">
+    <div class="card">
+        <h1 class="center">Project Page</h1>
+  <p> User ID: {{ session['user']['_id'] }}</p>
+  <p> User Name: {{ session['user']['name'] }}</p>
+  <p> User Email: {{ session['user']['email'] }}</p>
+  <p>Project ID: {{ session['project']['project_id'] }}</p>
+  <p>Project Name: {{ session['project']['project_name'] }}</p>
+  <p>Project Description: {{ session['project']['project_description'] }}</p>
+  </div>
+  </div>
+
+{% endblock %}

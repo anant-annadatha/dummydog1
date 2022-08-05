@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="center" style="margin-top:1.5em">Demodogs APAD - HaaS Project</h1>
+    <div class="card-wrapper" style="padding: 50px 30px;">
+        <div class="card">
+            <h1 class="center">Don't have an Account?</h1>
+            <form name="signup_form" action="">
+
+                <label for="name">Name</label>
+                <input type="text" name="name" class="field" id="" required>
+
+                <label for="email">Email</label>
+                <input type="email" name="email" class="field" id="" required>
+
+                <label for="password">Password</label>
+                <input type="password" name="password" pattern="(?=.*\d)(?=.*[a-z]).{6,}" class="field" id="password" required>
+                <!-- The pattern above check for the password containing lowercase letters and integers. 
+                    It'll not allow any other characters. The password should have a length of 6 alpha-numeric  -->
+
+                <p class="error error--hidden"></p>
+
+                <input type="submit" value="Sign Up" class="btn">
+
+                <!-- <a href="/" style="text-decoration: none;margin-left: 15%;">Already have an Account? Sign In</a> -->
+
+            </form>
+            <div id="message">
+                <small>Password must contain the following:</small><br>
+                <small id="letter" class="invalid">A lowercase letter</small><br>
+                <small id="number" class="invalid">A number</small><br>
+                <small id="length" class="invalid">Minimum 6 characters</small><br>
+            </div>
+        </div>
+
+        <div class="card">
+            <h1 class="center">Already have an Account?</h1>
+            <form name="signin_form" action="">
+
+                <label for="email" style="margin-top: 20%;">Email</label>
+                <input type="email" name="email" class="field" id="" required>
+
+                <label for="password">Password</label>
+                <input type="password" name="password" class="field" id="" required>
+
+                <p class="error error--hidden"></p>
+
+                <input type="submit" value="Sign In" class="btn">
+
+                <!-- <a href="/" style="text-decoration: none;margin-left: 15%;">Already have an Account? Sign In</a> -->
+
+            </form>
+        </div>
+
+        <style>
+            /* Style all input fields */
+            /* input {
+              width: 100%;
+              padding: 12px;
+              border: 1px solid #ccc;
+              border-radius: 4px;
+              box-sizing: border-box;
+              margin-top: 6px;
+              margin-bottom: 16px;
+            } */
+            
+            /* Style the submit button */
+            /* input[type=submit] {
+              background-color: #04AA6D;
+              color: white;
+            } */
+            
+            /* Style the container for inputs */
+            /* .container {
+              background-color: #f1f1f1;
+              padding: 2px;
+            } */
+            
+            /* The message box is shown when the user clicks on the password field */
+            #message {
+              display:none;
+              background: #f1f1f1;
+              color: #000;
+              position: relative;
+              padding: 20px;
+              margin-top: 1px;
+            }
+            
+            #message p {
+              /* padding: -100px -100px; */
+              font-size: 10px;
+            }
+            
+            #message small {
+              /* padding: -100px -100px; */
+              font-size: 10px;
+            }
+
+            /* Add a green text color and a checkmark when the requirements are right */
+            .valid {
+              color: green;
+            }
+            
+            .valid:before {
+              position: relative;
+              left: -3px;
+              content: "✔";
+            }
+            
+            /* Add a red text color and an "x" when the requirements are wrong */
+            .invalid {
+              color: red;
+            }
+            
+            .invalid:before {
+              position: relative;
+              left: -3px;
+              content: "✖";
+            }
+        </style>
+
+
+        <script>
+            var myInput = document.getElementById("password");
+            var letter = document.getElementById("letter");
+            var number = document.getElementById("number");
+            var length = document.getElementById("length");
+            
+            // When the user clicks on the password field, show the message box
+            myInput.onfocus = function() {
+                // document.getElementById("message").style.display = "block";
+                document.getElementById("message").style.display = "block";
+            }
+            
+            // When the user clicks outside of the password field, hide the message box
+            myInput.onblur = function() {
+                document.getElementById("message").style.display = "none";
+            }
+            
+            // When the user starts to type something inside the password field
+            myInput.onkeyup = function() {
+              // Validate lowercase letters
+              var lowerCaseLetters = /[a-z]/g;
+              if(myInput.value.match(lowerCaseLetters)) {  
+                letter.classList.remove("invalid");
+                letter.classList.add("valid");
+              } else {
+                letter.classList.remove("valid");
+                letter.classList.add("invalid");
+              }
+            
+              // Validate numbers
+              var numbers = /[0-9]/g;
+              if(myInput.value.match(numbers)) {  
+                number.classList.remove("invalid");
+                number.classList.add("valid");
+              } else {
+                number.classList.remove("valid");
+                number.classList.add("invalid");
+              }
+              
+              // Validate length
+              if(myInput.value.length >= 6) {
+                length.classList.remove("invalid");
+                length.classList.add("valid");
+              } else {
+                length.classList.remove("valid");
+                length.classList.add("invalid");
+              }
+            }
+        </script>
+
+
+    </div>
+
+{% endblock %}

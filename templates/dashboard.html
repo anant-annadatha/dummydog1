@@ -1,0 +1,214 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+{% extends "base.html" %}
+{% block content %}
+
+<div class ="card-wrapper">
+    <div class="card">
+        <h1 class="center">Dashboard</h1>
+        <p class="center">Welcome, {{ session['user']['name'] }}</p>
+
+        <div class="center" style="margin-top: 5%;">
+            <a href="/user/signout" class="btn btn-dange">Logout</a>
+        </div>  
+    </div>
+    <div class="card">
+        <h1 class="center">User Details</h1>
+        <p>
+            <strong>User ID:</strong> {{ session['user']['_id'] }}<br><br>
+            <strong>Email:</strong> {{ session['user']['email'] }}
+        </p>
+    </div>
+
+    <div class="card" style="width: 60%;">
+        <h1 class="center">Hardware Set Availability</h1>
+        
+        <table class="table table-bordered">
+            <!-- <script>
+                const refInt = 5000;
+                setTimeout(function(){
+                  location.reload();
+                },refInt); // 5000 milliseconds means 5 seconds.
+              </script> -->
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Hardware Set</th>
+                <th scope="col">Capacity</th>
+                <th scope="col">Availability</th>
+                <th scope="col">Cost Per Unit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>HWSet A</td>
+                <td>{{hardware["hwset1_capacity"]}}</td>
+                <td>{{hardware["hwset1_availability"]}}</td>
+                <td id="hwset1_cpu">${{hardware["hwset1_cpu"]}}</td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>HWSet B</td>
+                <td>{{hardware["hwset2_capacity"]}}</td>
+                <td>{{hardware["hwset2_availability"]}}</td>
+                <td id="hwset2_cpu">${{hardware["hwset2_cpu"]}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- <small class="center" style="font-size: 12px;">Availability Refreshes every 5 secs</small> -->
+    </div>
+
+    <div class="card" style="width: 40%;">
+        <div class="alert alert-success center" id="success-alertCI" style="display:none;">Units Checked In, Thank you!</div>
+        <h1 class="center">Check In</h1>
+        <form name="checkinform">
+            <input type="hidden" name="userId" value="{{ session['user']['_id'] }}"></input>
+            <input type="hidden" name="userEmail" value="{{ session['user']['email'] }}"></input>
+            <fieldset class="form-group">
+                <div class="row">
+                    <label  style="margin: 2 2 2px;" for="inputEmail3" class="col-form-label">HWSet</label>
+  
+                  <div class="col-sm-10">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="gridRadiosCheckIn" name="checkin1" id="gridRadios1" value="HWSet A" checked>
+                      <label class="form-check-label" for="gridRadios1">
+                        HWSet A
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="gridRadiosCheckIn" name="checkin2" id="gridRadios2" value="HWSet B">
+                      <label class="form-check-label" for="gridRadios2">
+                          HWSet B
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              <br>
+            <div class="form-group row">
+              <label for="units" class="col-form-label">Units</label>
+              <div class="col-sm-10">
+                <input type="number" min="0" class="form-control" name="checkinQ" id="unitid" placeholder="0">
+              </div>
+            </div>
+            <p style="padding-top: 10px;color: red; text-align: center;" class="errorCI error--hidden"></p>
+        </fieldset>
+        <div class="center">
+            <input type="submit" value="Check In" class="btn">
+        </div>
+            
+    </form>
+
+    </div>
+
+    <div class="card" style="width: 40%;">
+        <div class="alert alert-success center" id="success-alert" style="display:none;">Order Placed, Thank you!</div>
+        <h1 class="center">Check Out</h1>
+        <form name="checkoutform">
+            <input type="hidden" name="userId" value="{{ session['user']['_id'] }}"></input>
+            <input type="hidden" name="userEmail" value="{{ session['user']['email'] }}"></input>
+          <fieldset class="form-group">
+            <div class="row">
+              <label  style="margin: 2 2 2px;" for="inputEmail3" class="col-form-label">HWSet</label>
+              <div class="col-sm-10">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="gridRadiosCheckOut" id="gridRadios1" value="HWSet A" checked>
+                  <label class="form-check-label" for="gridRadios1">
+                    HWSet A
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="gridRadiosCheckOut" id="gridRadios2" value="HWSet B">
+                  <label class="form-check-label" for="gridRadios2">
+                    HWSet B
+                  </label>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="form-group row">
+              <label for="units" class="col-form-label">Units</label>
+              <div class="col-sm-10">
+                <input type="number" min="0" class="form-control" name="checkoutQ" id="unitid" placeholder="0" oninput="displayCost()">
+              </div>
+            </div>
+            <div style="margin: 0;padding: 0;" class="center"><strong id="result"></strong></div>
+            <p style="padding-top: 10px;" class="error error--hidden"></p>
+          </fieldset>
+            <div class="center">
+              <input type="submit" value="Check Out" class="btn">
+            </div>
+        </form>
+
+
+        <script>
+          function displayCost() {
+            const hw = document.getElementsByName('gridRadiosCheckOut')
+            const quantity = document.getElementsByName('checkoutQ')
+            
+            for(i = 0; i < hw.length; i++) {
+                if(hw[i].checked) {
+                  var hwset
+
+                  if(i==0) {
+                    hwset="hwset1_cpu"
+                  } else {
+                    hwset="hwset2_cpu"
+                  }
+
+                  document.getElementById("result").innerHTML
+                          = "Cost: $ " + ( quantity[0].value * document.getElementById(hwset).innerText.slice(1,) )
+
+                }
+            }
+          }
+        </script>
+    </div>
+
+</div>
+
+
+<h1 class="center">Projects</h1>
+
+<div class="card-wrapper">
+  <div class="card">
+      <h1 class="center">Don't have a Project?</h1>
+      <form name="project_create" action="">
+
+          <label for="project_name">Project Name</label>
+          <input type="text" name="project_name" class="field" id="" required>
+
+          <label for="project_description">Project Description</label>
+          <input type="text" name="project_description" class="field" id="" required>
+
+          <label for="project_id">Project ID</label>
+          <input type="text" name="project_id" class="field" id="" required>
+          <p class="error error--hidden"></p>
+          <input type="submit" value="Create Project" class="btn">
+
+          <!-- <a href="/" style="text-decoration: none;margin-left: 15%;">Already have an Account? Sign In</a> -->
+
+      </form>
+  </div>
+
+  <div class="card">
+      <h1 class="center">Already have a Project?</h1>
+      <form name="project_retrieve" action="">
+
+          <label for="project_id" style="margin-top: 20%;">Project ID</label>
+          <input type="text" name="project_id" class="field" id="" required>
+          <p class="error error--hidden"></p>
+          <input type="submit" value="Retrieve" class="btn">
+
+          <!-- <a href="/" style="text-decoration: none;margin-left: 15%;">Already have an Account? Sign In</a> -->
+
+      </form>
+  </div>
+</div>
+
+
+{% endblock %}
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
